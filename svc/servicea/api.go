@@ -5,6 +5,7 @@ import (
 	"log"
 
 	api "github.com/shihanng/gaegoasample/svc/servicea/gen/api"
+	"google.golang.org/appengine"
 )
 
 // api service example implementation.
@@ -20,7 +21,15 @@ func NewAPI(logger *log.Logger) api.Service {
 
 // Show info of the service
 func (s *apiSvc) Info(ctx context.Context) (res *api.GaegoasampleInfo, err error) {
-	res = &api.GaegoasampleInfo{}
+	appID := appengine.AppID(ctx)
+	moduleName := appengine.ModuleName(ctx)
+	versionID := appengine.VersionID(ctx)
+
+	res = &api.GaegoasampleInfo{
+		ID:          &appID,
+		ServiceName: &moduleName,
+		Version:     &versionID,
+	}
 	s.logger.Print("api.info")
 	return
 }
