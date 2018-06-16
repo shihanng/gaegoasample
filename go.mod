@@ -1,0 +1,39 @@
+module github.com/shihanng/gaegoasample
+
+require (
+	github.com/PuerkitoBio/purell v1.1.0
+	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
+	github.com/asaskevich/govalidator v0.0.0-20180319081651-7d2e70ef918f
+	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598
+	github.com/dimfeld/httptreemux v0.0.0-20180213074414-7f532489e773
+	github.com/go-openapi/analysis v0.0.0-20180520152044-5957818e1003
+	github.com/go-openapi/errors v0.0.0-20180515155515-b2b2befaf267
+	github.com/go-openapi/jsonpointer v0.0.0-20180322222829-3a0015ad55fa
+	github.com/go-openapi/jsonreference v0.0.0-20180322222742-3fb327e6747d
+	github.com/go-openapi/loads v0.0.0-20171207192234-2a2b323bab96
+	github.com/go-openapi/spec v0.0.0-20180415031709-bcff419492ee
+	github.com/go-openapi/strfmt v0.0.0-20180407011102-481808443b00
+	github.com/go-openapi/swag v0.0.0-20180405201759-811b1089cde9
+	github.com/golang/protobuf v1.1.0
+	github.com/google/gxui v0.0.0-20151028112939-f85e0a97b3a4
+	github.com/jtolds/gls v0.0.0-20170503224851-77f18212c9c7
+	github.com/mailru/easyjson v0.0.0-20180606163543-3fdea8d05856
+	github.com/manveru/faker v0.0.0-20171103152722-9fbc68a78c4d
+	github.com/manveru/gobdd v0.0.0-20131210092515-f1a17fdd710b
+	github.com/mitchellh/mapstructure v0.0.0-20180511142126-bb74f1db0675
+	github.com/pborman/uuid v0.0.0-20180122190007-c65b2f87fee3
+	github.com/sergi/go-diff v1.0.0
+	github.com/smartystreets/assertions v0.0.0-20180607162144-eb5b59917fa2
+	github.com/smartystreets/goconvey v0.0.0-20180222194500-ef6db91d284a
+	github.com/smartystreets/gunit v0.0.0-20180314194857-6f0d6275bdcd
+	github.com/stretchr/testify v1.2.2
+	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea
+	goa.design/goa v0.0.0-20180615192349-143d9953d4ca
+	golang.org/x/net v0.0.0-20180611182652-db08ff08e862
+	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f
+	golang.org/x/text v0.3.0
+	golang.org/x/tools v0.0.0-20180615195736-465e6f399236
+	google.golang.org/appengine v1.1.0
+	gopkg.in/mgo.v2 v2.0.0-20160818020120-3f83fa500528
+	gopkg.in/yaml.v2 v2.2.1
+)
