@@ -1,31 +1,20 @@
-package main
+package servicea_svc
 
 import (
 	"context"
-	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
-	"time"
 
 	servicea "github.com/shihanng/gaegoasample/svc/servicea"
 	api "github.com/shihanng/gaegoasample/svc/servicea/gen/api"
 	apisvr "github.com/shihanng/gaegoasample/svc/servicea/gen/http/api/server"
 	goahttp "goa.design/goa/http"
 	"goa.design/goa/http/middleware"
+	"google.golang.org/appengine"
 )
 
-func main() {
-	// Define command line flags, add any other flag required to configure
-	// the service.
-	var (
-		addr = flag.String("listen", ":8080", "HTTP listen `address`")
-		dbg  = flag.Bool("debug", false, "Log request and response bodies")
-	)
-	flag.Parse()
-
+func init() {
 	// Setup logger and goa log adapter. Replace logger with your own using
 	// your log package of choice. The goa.design/middleware/logging/...
 	// packages define log adapters for common log packages.
@@ -90,45 +79,21 @@ func main() {
 	// here apply to all the service endpoints.
 	var handler http.Handler = mux
 	{
-		if *dbg {
-			handler = middleware.Debug(mux, os.Stdout)(handler)
-		}
 		handler = middleware.Log(adapter)(handler)
 		handler = middleware.RequestID()(handler)
+		handler = appEngineContext()(handler)
 	}
 
-	// Create channel used by both the signal handler and server goroutines
-	// to notify the main goroutine when to stop the server.
-	errc := make(chan error)
+	http.Handle("/", handler)
+}
 
-	// Setup interrupt handler. This optional step configures the process so
-	// that SIGINT and SIGTERM signals cause the service to stop gracefully.
-	go func() {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, os.Interrupt)
-		errc <- fmt.Errorf("%s", <-c)
-	}()
-
-	// Start HTTP server using default configuration, change the code to
-	// configure the server as required by your service.
-	srv := &http.Server{Addr: *addr, Handler: handler}
-	go func() {
-		for _, m := range apiServer.Mounts {
-			logger.Printf("method %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
-		}
-		logger.Printf("listening on %s", *addr)
-		errc <- srv.ListenAndServe()
-	}()
-
-	// Wait for signal.
-	logger.Printf("exiting (%v)", <-errc)
-
-	// Shutdown gracefully with a 30s timeout.
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-	srv.Shutdown(ctx)
-
-	logger.Println("exited")
+func appEngineContext() func(http.Handler) http.Handler {
+	return func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx := appengine.NewContext(r)
+			h.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
 }
 
 // ErrorHandler returns a function that writes and logs the given error.
